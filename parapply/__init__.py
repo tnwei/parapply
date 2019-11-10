@@ -5,7 +5,6 @@ from joblib import Parallel, delayed
 # TODO: To make very clear the meaning between rowwise and columnwise, getting confused myself! 
 # TODO: Build in checks when parapply would slow things down instead and raise warnings
 # TODO: Add checks for n_chunks and n_jobs to make sense w.r.t each others
-# TODO: Add checks for when n_chunks reduces to one row per chunk i.e. becomes pd.Series
 
 def split_srs(srs, n_chunks):
     """
@@ -14,8 +13,8 @@ def split_srs(srs, n_chunks):
     
     Parameters
     ----------
-    srs: 
-    n_chunks:
+    srs: `pandas` Series to be split into chunks
+    n_chunks: Number of chunks to split
     """
     max_chunks = len(srs)
     if n_chunks > max_chunks:
@@ -50,17 +49,8 @@ def split_df(df, n_chunks, axis):
         idxs = [int(i) for i in np.linspace(start=0, stop=max_chunks, num=n_chunks+1)]
         # Setting num=n_chunks+1 guarantees last idx to be the final one
 
-        if n_chunks == max_chunks:
-            # Then chunks that should be df would be 
-            # transformed into Series! 
-            # Yields each chunk by chunk
-            # Note: using iloc removes this issue
-            for i in range(n_chunks):
-                yield df.iloc[:, idxs[i]:idxs[i+1]].T#.to_frame().T
-        else:
-            # Yields each chunk by chunk
-            for i in range(n_chunks):
-                yield df.iloc[:, idxs[i]:idxs[i+1]]
+        for i in range(n_chunks):
+            yield df.iloc[idxs[i]:idxs[i+1], :]
                 
     elif (axis == 1) or (axis == 'columns'):
         # If split column-wise, split along columns
@@ -76,7 +66,7 @@ def split_df(df, n_chunks, axis):
         # pd.concat(axis=1) on a list of Series
         # concats them back into a DataFrame!
         for i in range(n_chunks):
-            yield df.iloc[idxs[i]:idxs[i+1], :]
+            yield df.iloc[:, idxs[i]:idxs[i+1]]
     else:
         # If not correctly parsed as row-wise or column-wise
         raise ValueError(f'axis specified improperly as {axis}, valid inputs are: 0, 1, "axis", or "columns".')
@@ -103,12 +93,13 @@ def parapply(obj, fun, axis=0, n_jobs=8, n_chunks=10, verbose=0):
     verbose: Verbosity, parameter to be passed to
         `joblib` backend. 
     """
-    original_axes = obj.index.copy()
+    # original_axes = obj.index.copy()
+    
+    # TODO: auto suggest default n_chunks and n_jobs?
     
     if type(obj) == type(pd.Series()):
         split_obj_gen = split_srs(obj, n_chunks)
         output = Parallel(n_jobs=n_jobs, verbose=verbose, backend='loky')(map(delayed(lambda x: x.apply(fun)), split_obj_gen))
-
         return pd.concat(output, sort=True)
         
     elif type(obj) == type(pd.DataFrame()):
@@ -117,7 +108,12 @@ def parapply(obj, fun, axis=0, n_jobs=8, n_chunks=10, verbose=0):
         elif (axis == 0) or (axis == 'rows'):
             concat_axis = 1
 
-        split_obj_gen = split_df(obj, n_chunks, axis=axis)
+        split_obj_gen = split_df(obj, n_chunks, axis=concat_axis)
         output = Parallel(n_jobs=n_jobs, verbose=verbose, backend='loky')(map(delayed(lambda x: x.apply(fun, axis=axis)), split_obj_gen))
 
-        return pd.concat(output, axis=axis, sort=True)
+        # If the output is condensed to Series instead of DataFrames
+        # We can concat regardless
+        if type(output[0]) == type(pd.Series()):
+            return pd.concat(output, sort=True)
+        
+        return pd.concat(output, axis=concat_axis, sort=True)
