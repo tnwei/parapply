@@ -7,11 +7,32 @@ from joblib import Parallel, delayed
 # TODO: Add checks for n_chunks and n_jobs to make sense w.r.t each others
 # TODO: Add checks for when n_chunks reduces to one row per chunk i.e. becomes pd.Series
 
-def split_df(df, n_chunks, axis):
-    # TODO: Make another one for Series
+def split_srs(srs, n_chunks):
     """
     Generator used internally by `parapply` to split 
-    pandas objects by indices.
+    pandas Series by indices.
+    
+    Parameters
+    ----------
+    srs: 
+    n_chunks:
+    """
+    max_chunks = len(srs)
+    if n_chunks > max_chunks:
+        n_chunks = max_chunks    
+        
+    # Create indices to split
+    idxs = [int(i) for i in np.linspace(start=0, stop=max_chunks, num=n_chunks+1)]
+    # Setting num=n_chunks+1 guarantees last idx to be the final one
+
+    # Split along indices
+    for i in range(n_chunks):
+        yield srs.iloc[idxs[i]:idxs[i+1]]
+
+def split_df(df, n_chunks, axis):
+    """
+    Generator used internally by `parapply` to split 
+    pandas DataFrame either by indices or by columns.
     
     Parameters
     ----------
@@ -84,12 +105,19 @@ def parapply(obj, fun, axis=0, n_jobs=8, n_chunks=10, verbose=0):
     """
     original_axes = obj.index.copy()
     
-    if (axis == 1) or (axis == 'columns'):
-        concat_axis = 0
-    elif (axis == 0) or (axis == 'rows'):
-        concat_axis = 1
-    
-    split_obj_gen = split_df(obj, n_chunks, axis=axis)
-    output = Parallel(n_jobs=n_jobs, verbose=verbose, backend='loky')(map(delayed(lambda x: x.apply(fun, axis=axis)), split_obj_gen))
-    
-    return pd.concat(output, axis=axis, sort=True)
+    if type(obj) == type(pd.Series()):
+        split_obj_gen = split_srs(obj, n_chunks)
+        output = Parallel(n_jobs=n_jobs, verbose=verbose, backend='loky')(map(delayed(lambda x: x.apply(fun)), split_obj_gen))
+
+        return pd.concat(output, sort=True)
+        
+    elif type(obj) == type(pd.DataFrame()):
+        if (axis == 1) or (axis == 'columns'):
+            concat_axis = 0
+        elif (axis == 0) or (axis == 'rows'):
+            concat_axis = 1
+
+        split_obj_gen = split_df(obj, n_chunks, axis=axis)
+        output = Parallel(n_jobs=n_jobs, verbose=verbose, backend='loky')(map(delayed(lambda x: x.apply(fun, axis=axis)), split_obj_gen))
+
+        return pd.concat(output, axis=axis, sort=True)
