@@ -1,20 +1,20 @@
 import pandas as pd
 import numpy as np
-from joblib import Parallel, delayed
-
-# TODO: To make very clear the meaning between rowwise and columnwise, getting confused myself! 
-# TODO: Build in checks when parapply would slow things down instead and raise warnings
-# TODO: Add checks for n_chunks and n_jobs to make sense w.r.t each others
+from joblib import Parallel, delayed, cpu_count
 
 def split_srs(srs, n_chunks):
     """
     Generator used internally by `parapply` to split 
-    pandas Series by indices.
+    `pandas` Series by indices.
     
     Parameters
     ----------
     srs: `pandas` Series to be split into chunks
     n_chunks: Number of chunks to split
+    
+    Yields
+    ------
+    chunk: Chunk of original Series, ordered by index
     """
     max_chunks = len(srs)
     if n_chunks > max_chunks:
@@ -26,7 +26,8 @@ def split_srs(srs, n_chunks):
 
     # Split along indices
     for i in range(n_chunks):
-        yield srs.iloc[idxs[i]:idxs[i+1]]
+        chunk = srs.iloc[idxs[i]:idxs[i+1]]
+        yield chunk
 
 def split_df(df, n_chunks, axis):
     """
@@ -35,9 +36,14 @@ def split_df(df, n_chunks, axis):
     
     Parameters
     ----------
-    df: 
-    n_chunks:
-    axis:
+    df: `pandas` DataFrame to be split into chunks
+    n_chunks: Number of chunks to split
+    axis: Split direction, 0 / 'rows' or 1 / 'columns'
+    
+    Yields
+    ------
+    chunk: Chunk of original DataFrame, ordered by indices/columns
+        as specified by `axis`
     """
     # Divides df into n_chunks
     if (axis == 0) or (axis == 'rows'):
@@ -50,7 +56,8 @@ def split_df(df, n_chunks, axis):
         # Setting num=n_chunks+1 guarantees last idx to be the final one
 
         for i in range(n_chunks):
-            yield df.iloc[idxs[i]:idxs[i+1], :]
+            chunk = df.iloc[idxs[i]:idxs[i+1], :]
+            yield chunk
                 
     elif (axis == 1) or (axis == 'columns'):
         # If split column-wise, split along columns
@@ -66,16 +73,19 @@ def split_df(df, n_chunks, axis):
         # pd.concat(axis=1) on a list of Series
         # concats them back into a DataFrame!
         for i in range(n_chunks):
-            yield df.iloc[:, idxs[i]:idxs[i+1]]
+            chunk = df.iloc[:, idxs[i]:idxs[i+1]]
+            yield chunk
     else:
         # If not correctly parsed as row-wise or column-wise
         raise ValueError(f'axis specified improperly as {axis}, valid inputs are: 0, 1, "axis", or "columns".')
 
-# The really peculiar thing about this is 
+# Worth noting that:
 # using iloc[a:b] means [a, b)
 # while using loc[a:b] means [a, b]! 
         
-def parapply(obj, fun, axis=0, n_jobs=8, n_chunks=10, verbose=0):
+def parapply(obj, fun, axis=0, 
+             n_jobs=-1, n_chunks='auto', 
+             backend='loky', verbose=0):
     """
     Parallelized version of `apply` for pandas DataFrame 
     and pandas Series objects.
@@ -85,23 +95,36 @@ def parapply(obj, fun, axis=0, n_jobs=8, n_chunks=10, verbose=0):
     obj: DataFrame / Series of interest
     fun: Function of interest
     axis: 0 / 1 or 'rows' / 'columns'
-    n_jobs: Max number of concurrent jobs, parameter 
-        to be passed to `joblib` backend
-    n_chunks: Chunks to split the DataFrame / Series into. 
-        More chunks means more concurrent jobs can be 
-        run at the same time. 
+    n_jobs: Max number of concurrent jobs, defaults to 
+        -1 for all cpu cores. Parameter to be 
+        passed to `joblib` backend. Refer to 
+        https://joblib.readthedocs.io/en/latest/generated/joblib.Parallel.html.
+    n_chunks: Number of chunks to split the Series / 
+        Dataframe into. Defaults to CPU core count from 
+        `joblib.cpu_count()`. More chunks means more 
+        concurrent jobs can be run at the same time. 
+    backend: `joblib` parallelization backend, defaults to 
+        'loky'. Refer to https://joblib.readthedocs.io/en/latest/generated/joblib.Parallel.html.
+    
     verbose: Verbosity, parameter to be passed to
         `joblib` backend. 
+        
+    Returns
+    -------
+    result: DataFrame / Series after `fun` has been applied
     """
-    # original_axes = obj.index.copy()
+    # Parallelization input
+    if n_chunks == 'auto':
+        n_chunks = joblib.cpu_count()
     
-    # TODO: auto suggest default n_chunks and n_jobs?
-    
+    # For Series input
     if type(obj) == type(pd.Series()):
         split_obj_gen = split_srs(obj, n_chunks)
         output = Parallel(n_jobs=n_jobs, verbose=verbose, backend='loky')(map(delayed(lambda x: x.apply(fun)), split_obj_gen))
-        return pd.concat(output, sort=True)
-        
+        result = pd.concat(output, sort=True)
+        return result
+    
+    # For Dataframe input
     elif type(obj) == type(pd.DataFrame()):
         if (axis == 1) or (axis == 'columns'):
             concat_axis = 0
@@ -112,8 +135,10 @@ def parapply(obj, fun, axis=0, n_jobs=8, n_chunks=10, verbose=0):
         output = Parallel(n_jobs=n_jobs, verbose=verbose, backend='loky')(map(delayed(lambda x: x.apply(fun, axis=axis)), split_obj_gen))
 
         # If the output is condensed to Series instead of DataFrames
-        # We can concat regardless
+        # Only one axis for concat
         if type(output[0]) == type(pd.Series()):
-            return pd.concat(output, sort=True)
+            result = pd.concat(output, sort=True)
+            return result
         
-        return pd.concat(output, axis=concat_axis, sort=True)
+        result = pd.concat(output, axis=concat_axis, sort=True)
+        return resul

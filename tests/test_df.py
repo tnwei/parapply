@@ -6,6 +6,9 @@ from parapply import parapply
 # TODO: Test mixed input datatypes
 
 def test_elementwise_fun():
+    """
+    This test checks for ufunc application.
+    """
     def simple_fun(x):
         return x * 3
     
