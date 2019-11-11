@@ -1,6 +1,6 @@
 # Parapply
 
-A simple drop-in replacement for pandas `apply()` on large Series / DataFrames, parallelized using `joblib`. Works by dividing the Series / DataFrame into multiple chunks and running `apply` concurrently. 
+A simple drop-in replacement for pandas `apply()` on large Series / DataFrames, parallelized using `joblib`. Works by dividing the Series / DataFrame into multiple chunks and running `apply` concurrently. As a rule of thumb, use `parapply` only if you have 1 million rows and above.
 
 # Simple Usage
 
@@ -10,8 +10,6 @@ DataFrames: `parapply(df, fun, axis)` instead of `df.apply(fun, axis)`
 For more fine-grained control:
     + `n_jobs` to decide number of concurrent jobs, 
     + `n_chunks` for number of chunks to split the Series / DataFrame
-
-As a rule of thumb, using `parapply` if you have 1 million rows and above.
 
 Examples:
 
@@ -71,6 +69,7 @@ print(parapply_result)
 # 4    0.712960
 # dtype: float64
 ```
+Refer to docstrings for more information.
 
 # Execution time vs pandas `apply` (not rigorous!)
 
