@@ -115,7 +115,7 @@ def parapply(obj, fun, axis=0,
     """
     # Parallelization input
     if n_chunks == 'auto':
-        n_chunks = joblib.cpu_count()
+        n_chunks = cpu_count()
     
     # For Series input
     if type(obj) == type(pd.Series()):
