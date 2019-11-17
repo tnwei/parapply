@@ -1,0 +1,24 @@
+# /usr/bin/env ipython
+import sys
+import pandas as pd
+import numpy as np
+from parapply import parapply
+import sys
+
+srs_lens = [1e4, 1e5, 1e6, 5e6, 1e7, 2e7, 3e7, 4e7, 5e7, 6e7, 7e7, 8e7, 9e7, 1e8, 2e8, 3e8, 4e8, 5e8]
+jobs = [4, 8, 16, 24, 48]
+
+def test_fun(x):
+    return x ** 2
+
+for srslen in srs_lens:
+    print(f'---- Doing length: {srslen} ----', flush=True)
+    srs = pd.Series(np.random.random(size=(int(srslen), )))
+    print('pd Series performance: ', flush=True)
+    %timeit srs.apply(test_fun)
+    sys.stdout.flush()
+    print(f'parapply {jobs} performance:', flush=True)
+    
+    for n_jobs in jobs:
+        %timeit parapply(srs, test_fun, n_chunks=n_jobs, n_jobs=n_jobs)
+        sys.stdout.flush()

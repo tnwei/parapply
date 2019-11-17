@@ -1,0 +1,164 @@
+---- Doing length: 10000.0 ----
+pd Series performance: 
+1.86 ms ± 3.39 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+parapply [4, 8, 16, 24, 48] performance:
+16.7 ms ± 444 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+24.8 ms ± 757 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+41 ms ± 990 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+56.6 ms ± 1.68 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+The slowest run took 5.55 times longer than the fastest. This could mean that an intermediate result is being cached.
+143 ms ± 118 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 100000.0 ----
+pd Series performance: 
+17.8 ms ± 155 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+parapply [4, 8, 16, 24, 48] performance:
+30.3 ms ± 278 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+35.1 ms ± 107 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+44.3 ms ± 1.63 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+59.6 ms ± 2.42 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+The slowest run took 4.05 times longer than the fastest. This could mean that an intermediate result is being cached.
+175 ms ± 110 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 1000000.0 ----
+pd Series performance: 
+188 ms ± 4.48 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+227 ms ± 2.43 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+81 ms ± 1.83 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+83.6 ms ± 3.13 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+94.9 ms ± 3.88 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+200 ms ± 83.5 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 5000000.0 ----
+pd Series performance: 
+1.05 s ± 1.07 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+1.03 s ± 28.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+569 ms ± 14.5 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+426 ms ± 8.72 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+336 ms ± 39.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+245 ms ± 54.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 10000000.0 ----
+pd Series performance: 
+2.12 s ± 15.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+2.12 s ± 135 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+1.08 s ± 19.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+632 ms ± 25.6 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+612 ms ± 11.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+526 ms ± 17.5 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 20000000.0 ----
+pd Series performance: 
+4.29 s ± 50.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+4.13 s ± 100 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+2.2 s ± 81.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+1.23 s ± 53.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+1.22 s ± 29.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+913 ms ± 53.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 30000000.0 ----
+pd Series performance: 
+6.49 s ± 128 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+6.15 s ± 166 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+3.4 s ± 93.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+1.86 s ± 50.6 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+1.75 s ± 73.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+1.33 s ± 96.5 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 40000000.0 ----
+pd Series performance: 
+8.63 s ± 117 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+8.14 s ± 59.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+4.25 s ± 43.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+2.54 s ± 98.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+2.09 s ± 129 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+1.81 s ± 114 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 50000000.0 ----
+pd Series performance: 
+10.6 s ± 141 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+10.3 s ± 52.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+5.45 s ± 76.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+3.22 s ± 96.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+2.54 s ± 126 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+2.35 s ± 90.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 60000000.0 ----
+pd Series performance: 
+12.9 s ± 143 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+12.3 s ± 164 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+6.64 s ± 141 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+3.97 s ± 173 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+2.83 s ± 122 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+2.65 s ± 91.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 70000000.0 ----
+pd Series performance: 
+15.1 s ± 200 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+14.2 s ± 74.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+8.17 s ± 53.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+4.28 s ± 75.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+3.37 s ± 145 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+3.11 s ± 97.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 80000000.0 ----
+pd Series performance: 
+17.3 s ± 220 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+16.1 s ± 175 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+9.25 s ± 45.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+4.85 s ± 64.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+3.95 s ± 281 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+3.27 s ± 105 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 90000000.0 ----
+pd Series performance: 
+19 s ± 98.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+18.5 s ± 88.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+10.4 s ± 63.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+5.48 s ± 69.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+4.88 s ± 250 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+3.91 s ± 180 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 100000000.0 ----
+pd Series performance: 
+21.8 s ± 363 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+20.2 s ± 84.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+11.6 s ± 54.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+6.19 s ± 104 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+4.97 s ± 191 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+4.33 s ± 187 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 200000000.0 ----
+pd Series performance: 
+43 s ± 387 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+40.4 s ± 453 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+23.1 s ± 155 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+14.3 s ± 47.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+11.3 s ± 69.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+9.03 s ± 319 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 300000000.0 ----
+pd Series performance: 
+1min 6s ± 1.4 s per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+1min ± 230 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+34.6 s ± 230 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+21.3 s ± 103 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+17.1 s ± 209 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+13.3 s ± 231 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 400000000.0 ----
+pd Series performance: 
+1min 31s ± 645 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+1min 21s ± 203 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+46.8 s ± 321 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+28.4 s ± 182 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+22.9 s ± 121 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+21.5 s ± 411 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+---- Doing length: 500000000.0 ----
+pd Series performance: 
+1min 55s ± 677 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+parapply [4, 8, 16, 24, 48] performance:
+1min 40s ± 1.72 s per loop (mean ± std. dev. of 7 runs, 1 loop each)
+58.1 s ± 419 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+35.7 s ± 256 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+28.8 s ± 365 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+27.1 s ± 298 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)

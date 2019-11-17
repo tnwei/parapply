@@ -1,13 +1,15 @@
 # Parapply
 
-A simple drop-in replacement for pandas `apply()` on large Series / DataFrames, parallelized using `joblib`. Works by dividing the Series / DataFrame into multiple chunks and running `apply` concurrently. As a rule of thumb, use `parapply` only if you have 1 million rows and above.
+A simple drop-in replacement for parallelized pandas `apply()` on large Series / DataFrames, using `joblib`. Works by dividing the Series / DataFrame into multiple chunks and running `apply` concurrently. As a rule of thumb, use `parapply` only if you have 10 million rows and above (see benchmark below).
 
-# Simple Usage
+Install by running `pip install parapply`. Requires `joblib`, `numpy`, and `pandas` (obviously!)
+
+## Simple Usage
 
 Series: `parapply(srs, fun)` instead of `srs.apply(fun)`
 DataFrames: `parapply(df, fun, axis)` instead of `df.apply(fun, axis)`
 
-For more fine-grained control:
+For more fine grain control:
     + `n_jobs` to decide number of concurrent jobs, 
     + `n_chunks` for number of chunks to split the Series / DataFrame
 
@@ -71,14 +73,15 @@ print(parapply_result)
 ```
 Refer to docstrings for more information.
 
-# Execution time vs pandas `apply` (not rigorous!)
+## Quick and dirty benchmarks
 
-TODO: To be updated
+Ran a quick and dirty benchmark to compare time taken to apply `lambda x:x ** 2` to Series of varying length using pandas `apply` and `parapply` on multiple `n_jobs` settings:
 
-# Installation
+![Runtime vs log(num data points)](docs/results_logx.png)
 
-TODO: To be updated
+This semilog plot above shows that significant runtime differences between pandas `apply` and `parapply` show up at 10 million data points and onwards. 
 
-# Acknowledgements
+
+## Acknowledgements
 
 Thanks to @aaronlhe for introducing me to the world of unit tests!
