@@ -16,6 +16,9 @@ def split_srs(srs, n_chunks):
     ------
     chunk: Chunk of original Series, ordered by index
     """
+    assert isinstance(n_chunks, int), f'n_chunks needs to be int instead of {type(n_chunks)}'
+    assert isinstance(srs, pd.Series), f'srs needs to be pandas.Series instead of {type(pd.Series)}'
+    
     max_chunks = len(srs)
     if n_chunks > max_chunks:
         n_chunks = max_chunks    
@@ -45,6 +48,10 @@ def split_df(df, n_chunks, axis):
     chunk: Chunk of original DataFrame, ordered by indices/columns
         as specified by `axis`
     """
+    assert isinstance(n_chunks, int), f'n_chunks needs to be int instead of {type(n_chunks)}'
+    assert isinstance(df, pd.DataFrame), f'df needs to be pandas.DataFrame instead of {type(pd.DataFrame)}'
+    assert isinstance(axis, int), f'axis needs to be int instead of {type(axis)}'
+    
     # Divides df into n_chunks
     if (axis == 0) or (axis == 'rows'):
         max_chunks = len(df)
@@ -141,4 +148,4 @@ def parapply(obj, fun, axis=0,
             return result
         
         result = pd.concat(output, axis=concat_axis, sort=True)
-        return resul
+        return result
