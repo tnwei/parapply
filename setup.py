@@ -4,8 +4,8 @@ with open('README.md', 'r') as f:
     long_description = f.read()
 
 setuptools.setup(
-    name="parapply", 
-    version="0.0.1",
+    name="parapply",
+    version="0.0.2",
     author="Tan Nian Wei",
     author_email="tannianwei@aggienetwork.com",
     description="A simple drop-in replacement for parallelized pandas `apply`",
@@ -13,6 +13,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/tnwei/parapply",
     packages=setuptools.find_packages(),
+    install_requires=[
+          'numpy', 'pandas', 'joblib'
+      ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
