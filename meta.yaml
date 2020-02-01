@@ -1,0 +1,46 @@
+{% set name = "parapply" %}
+{% set version = "0.0.2" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
+  sha256: 090dd8db2bd6817c8ddad717a95726199a48f33ba245ef10b69d86c6b5bb3c26
+
+build:
+  noarch: python
+  number: 0
+  script: "{{ PYTHON }} -m pip install . -vv"
+
+requirements:
+  host:
+    - joblib
+    - numpy
+    - pandas
+    - pip
+    - python
+  run:
+    - joblib
+    - numpy
+    - pandas
+    - python
+
+test:
+  imports:
+    - parapply
+    - tests
+
+about:
+  home: "https://github.com/tnwei/parapply"
+  license: MIT
+  license_family: MIT
+  license_file: 
+  summary: "A simple drop-in replacement for parallelized pandas `apply`"
+  doc_url: 
+  dev_url: 
+
+extra:
+  recipe-maintainers:
+    - 12769364

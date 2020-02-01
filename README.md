@@ -2,7 +2,7 @@
 
 A simple drop-in replacement for parallelized pandas `apply()` on large Series / DataFrames, using `joblib`. Works by dividing the Series / DataFrame into multiple chunks and running `apply` concurrently. As a rule of thumb, use `parapply` only if you have 10 million rows and above (see benchmark below).
 
-Install by running `pip install parapply`. Requires `joblib`, `numpy`, and `pandas` (obviously!)
+Install by running `pip install parapply`, or `conda install -c tnwei parapply`. Requires `joblib`, `numpy`, and `pandas` (obviously!)
 
 ## Simple Usage
 
